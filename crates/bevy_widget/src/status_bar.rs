@@ -1,4 +1,4 @@
-//! A progress bar widget.
+//! A status bar widget.
 //! Can be used for loading bars, but also health-bars, mana, those kind of things.
 
 use bevy_ecs::{
@@ -13,10 +13,10 @@ use bevy_math::map_range;
 use bevy_reflect::Reflect;
 use bevy_ui::{Size, Style, Val};
 
-/// A progress bar widget.
+/// A status bar widget.
 #[derive(Component, Default, Clone, Debug, Reflect)]
 #[reflect(Component)]
-pub struct ProgressBarWidget {
+pub struct StatusBarWidget {
     /// The current progress of the progress bar.
     ///
     /// Valid range between min and max, inclusive.
@@ -26,14 +26,14 @@ pub struct ProgressBarWidget {
     /// Maximum valid value that progress can have. Inclusive.
     max: f32,
     /// Defines the direction of the `ProgressBarWidget`.
-    direction: ProgressBarDirection,
+    direction: StatusBarDirection,
 }
 
 /// Defines the direction the progress bar will increase the size of the inner node.
 ///
 /// It increases in the direction of the flex-axis.
 #[derive(Default, Debug, Clone, Reflect)]
-pub enum ProgressBarDirection {
+pub enum StatusBarDirection {
     /// Direction from FlexStart to FlexEnd
     #[default]
     Horizontal,
@@ -44,19 +44,19 @@ pub enum ProgressBarDirection {
 /// Marker component for the inner box of the progress bar.
 #[derive(Component, Default, Clone, Debug, Reflect)]
 #[reflect(Component)]
-pub struct ProgressBarInner;
+pub struct StatusBarInner;
 
-impl ProgressBarWidget {
-    /// Creates a new [`ProgressBarWidget`].
+impl StatusBarWidget {
+    /// Creates a new [`StatusBarWidget`].
     pub fn new(progress: f32, min: f32, max: f32) -> Self {
         if min > max {
             panic!("Min should not be larger than max");
         } else {
-            ProgressBarWidget {
+            StatusBarWidget {
                 progress,
                 min,
                 max,
-                direction: ProgressBarDirection::default(),
+                direction: StatusBarDirection::default(),
             }
         }
     }
@@ -78,9 +78,9 @@ impl ProgressBarWidget {
     }
 }
 
-pub(crate) fn update_progress_bars(
-    q: Query<(&ProgressBarWidget, &Children), Changed<ProgressBarWidget>>,
-    mut inner: Query<&mut Style, With<ProgressBarInner>>,
+pub(crate) fn update_status_bars(
+    q: Query<(&StatusBarWidget, &Children), Changed<StatusBarWidget>>,
+    mut inner: Query<&mut Style, With<StatusBarInner>>,
 ) {
     for (widget, children) in q.iter() {
         for child in children.iter() {
@@ -93,8 +93,8 @@ pub(crate) fn update_progress_bars(
                 ));
 
                 style.size = match widget.direction {
-                    ProgressBarDirection::Horizontal => Size::new(new_value, current_size.height),
-                    ProgressBarDirection::Vertical => Size::new(current_size.width, new_value),
+                    StatusBarDirection::Horizontal => Size::new(new_value, current_size.height),
+                    StatusBarDirection::Vertical => Size::new(current_size.width, new_value),
                 };
             }
         }

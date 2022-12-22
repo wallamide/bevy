@@ -324,7 +324,11 @@ Example | Description
 
 Example | Description
 --- | ---
-[Progress Bar Widget](../examples/widgets/progress_bar.rs) | Illustrates how to use the progress bar widget
+[Progress Bar Widget](../examples/widgets/progress_bar.rs) | Illustrates how to use the status bar widget to make a progress bar.
+
+Example | Description
+--- | ---
+[Health Bar Widget](../examples/widgets/health_bar.rs) | Demonstrates how to create a health bar using the status bar widget.
 
 ## Window
 
