@@ -1511,7 +1511,18 @@ path = "examples/widgets/progress_bar.rs"
 
 [package.metadata.example.progress_bar]
 name = "Progress Bar Widget"
-description = "Illustrates how to use the progress bar widget"
+description = "Illustrates how to use the status bar widget"
+category = "Widgets"
+wasm = true
+
+# Widgets
+[[example]]
+name = "health_bar"
+path = "examples/widgets/health_bar.rs"
+
+[package.metadata.example.health_bar]
+name = "Health Bar Widget"
+description = "Demonstrates how to make a health bar with the status widget."
 category = "Widgets"
 wasm = true
 

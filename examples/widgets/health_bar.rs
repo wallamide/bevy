@@ -3,7 +3,8 @@
 use bevy::{
     math::map_range,
     prelude::*,
-    widget::{StatusBarInner, StatusBarWidget, WidgetPlugin},
+    sprite::MaterialMesh2dBundle,
+    widget::WidgetPlugin, //{StatusBarInner, StatusBarWidget, }
 };
 fn main() {
     App::new()
@@ -13,7 +14,12 @@ fn main() {
         .run();
 }
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    asset_server: Res<AssetServer>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) {
     let health_bar_background: Color = Color::rgba_u8(92, 1, 1, 255);
     let health_bar_foreground: Color = Color::rgba_u8(224, 20, 20, 255);
     let text_color1: Color = Color::rgba_u8(250, 192, 192, 255);
