@@ -26,7 +26,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(WidgetPlugin)
         .add_startup_system(setup)
-        // .add_system(change_hp)
+        .add_system(change_health)
         .add_system(set_status_bar) //.after(change_hp)
         .run();
 }
@@ -53,7 +53,13 @@ fn setup(
             transform: Transform::from_translation(Vec3::new(0., 0., 0.)),
             ..default()
         })
-        .insert((Health { max: 150., hp: 98. }, Player));
+        .insert((
+            Health {
+                max: 150.,
+                hp: 150.,
+            },
+            Player,
+        ));
 
     // spawn a health bar
     commands
@@ -88,22 +94,22 @@ fn setup(
         });
 }
 
-// fn change_hp(mut q: Query<&mut Health, With<Player>>) {
-//     let mut health = q.single_mut();
-
-//     // let mut i = 1.;
-//     // while health.hp >= 0. {
-//     //     health.hp -= 5. * &i;
-//     //     thread::sleep(time::Duration::from_secs(1));
-//     //     i += 1.
-//     // }
-// }
-
 /// Update the [`StatusBarWidget`] with the current player health
 fn set_status_bar(mut q: Query<&mut StatusBarWidget>, health: Query<&Health, With<Player>>) {
     for mut widget in q.iter_mut() {
         let health = health.single();
         let current_health = health.hp / health.max;
         widget.set_progress(current_health);
+    }
+}
+
+fn change_health(keyboard_input: Res<Input<KeyCode>>, mut query: Query<&mut Health, With<Player>>) {
+    let mut health = query.single_mut();
+    if keyboard_input.just_pressed(KeyCode::Left) {
+        health.hp -= 5.;
+    } else if keyboard_input.just_pressed(KeyCode::Right) {
+        health.hp += 5.;
+    } else if keyboard_input.just_pressed(KeyCode::Space) {
+        health.hp = health.max;
     }
 }
