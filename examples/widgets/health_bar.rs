@@ -7,7 +7,7 @@ use bevy::{
     math::map_range,
     prelude::*,
     sprite::MaterialMesh2dBundle,
-    widget::{StatusBarInner, StatusBarWidget, WidgetPlugin}, //{StatusBarInner, StatusBarWidget, }
+    widget::{StatusBarInner, StatusBarWidget, WidgetPlugin},
 };
 
 /// Add a health component to an entity to track hit/health points.
@@ -38,9 +38,7 @@ fn setup(
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
     let health_bar_background: Color = Color::rgba_u8(54, 2, 2, 255);
-    let health_bar_foreground: Color = Color::rgba_u8(42, 209, 56, 255); // 224, 20, 20
-    let text_color1: Color = Color::rgba_u8(250, 192, 192, 255);
-    let text_color2: Color = Color::rgba_u8(225, 240, 238, 255);
+    let health_bar_foreground: Color = Color::rgba_u8(42, 209, 56, 255);
 
     // spawn world camera
     commands.spawn(Camera2dBundle::default());
@@ -49,8 +47,7 @@ fn setup(
     commands
         .spawn(MaterialMesh2dBundle {
             mesh: meshes.add(shape::RegularPolygon::new(50., 6).into()).into(),
-            material: materials.add(ColorMaterial::from(Color::TURQUOISE)),
-            transform: Transform::from_translation(Vec3::new(0., 0., 0.)),
+            material: materials.add(ColorMaterial::from(Color::GREEN)),
             ..default()
         })
         .insert((
@@ -61,7 +58,7 @@ fn setup(
             Player,
         ));
 
-    // spawn a health bar
+    // spawn a status bar for health
     commands
         .spawn(NodeBundle {
             style: Style {
@@ -103,6 +100,7 @@ fn set_status_bar(mut q: Query<&mut StatusBarWidget>, health: Query<&Health, Wit
     }
 }
 
+/// Change player health using the arrow keys
 fn change_health(keyboard_input: Res<Input<KeyCode>>, mut query: Query<&mut Health, With<Player>>) {
     let mut health = query.single_mut();
     if keyboard_input.just_pressed(KeyCode::Left) {
